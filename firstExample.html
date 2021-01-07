@@ -12,7 +12,13 @@
     let cube;
     let sphere;
     let torus;
+    let donuts = [];
     let ADD = 0.01;
+
+    let randomRange = function(from, to){
+        let x = Math.random()* (to-from);
+        return x + from;
+    };
     
     let createCube = function(){
         let geometry = new THREE.BoxGeometry(4,4,4);
@@ -39,6 +45,20 @@
         scene.add(torus);
     };
 
+    let createDonuts = function(){
+        let geometry = new THREE.TorusGeometry(1,0.5,30,30);
+        let material = new THREE.MeshBasicMaterial({color:Math.random()*0xffffff});
+
+        let donutObject = new THREE.Mesh(geometry, material);
+        donutObject.position.x = randomRange(-15,15);   
+        donutObject.position.z = randomRange(-15,15);
+        donutObject.position.y = 15;
+        scene.add(donutObject);
+
+        // push elements to the array
+        donuts.push(donutObject);
+    };
+
     let init = function(){
         // create the scene
         scene = new THREE.Scene();
@@ -46,18 +66,20 @@
         
         // create an locate thr camera
         camera = new THREE.PerspectiveCamera(
-                            30, 
+                            75, 
                             window.innerWidth / window.innerHeight,
                             1,
                             1000);
-        camera.position.z = 50;
-
+        //camera.position.z = 50;
+        camera.position.z = 20;
+        camera.position.y = -10;
         
 
         
         //createSphere()
         //createCube()
-        createTorus()
+        //createTorus()
+        
 
         // create the renderer
         renderer = new THREE.WebGLRenderer();
@@ -90,11 +112,23 @@
         if (torus){
             torus.rotation.y += ADD*roationSpeed/2;
             //torus.rotation.x += ADD*roationSpeed/2;
-
         };
+
+        let xDonuts = Math.random();
+        if (xDonuts<0.01){
+            createDonuts()
+        };
+
+        //createDonuts()
+        donuts.forEach(item => item.position.y -= ADD*5);
 
         let axes = new THREE.AxesHelper(10);
         scene.add(axes);
+
+        //scene.addEventListener("click", function( event ) {
+        //    
+        // }
+        //);
         
 
         renderer.render(scene, camera);
