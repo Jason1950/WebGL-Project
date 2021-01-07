@@ -8,11 +8,10 @@
   <body></body>
 </html>
 <script>
-    let scene;
-    let camera;
-    let renderer;
+    let scene, camera, renderer;
     let cube;
     let sphere;
+    let torus;
     let ADD = 0.01;
     
     let createCube = function(){
@@ -32,6 +31,14 @@
         scene.add(sphere);
     };
 
+    let createTorus = function(){
+        let geometry = new THREE.TorusGeometry(5,1,20,5,2*Math.PI); 
+                            // (rTorus, thickTorus, rSegment, tubularSegment, cyclic)
+        let material = new THREE.MeshBasicMaterial({color:0x1122f5, wireframe:true});
+        torus = new THREE.Mesh(geometry, material);
+        scene.add(torus);
+    };
+
     let init = function(){
         // create the scene
         scene = new THREE.Scene();
@@ -48,8 +55,9 @@
         
 
         
-        createSphere()
-        createCube()
+        //createSphere()
+        //createCube()
+        createTorus()
 
         // create the renderer
         renderer = new THREE.WebGLRenderer();
@@ -59,16 +67,30 @@
     };
 
     let mainLoop = function(){
-        // cccc
         // console.log("Hello ");
         let roationSpeed = 3;
-        cube.position.x += ADD;
-        cube.rotation.z -= ADD*roationSpeed;
-        cube.rotation.y -= ADD*roationSpeed;
-        cube.rotation.x -= ADD*roationSpeed;
-        sphere.rotation.y += ADD*roationSpeed/2;
-        if (cube.position.x <-3 || cube.position.x >3){
-            ADD *= -1;
+
+        // check is cube variable is null or exsit ?
+        if (cube){
+            cube.position.x += ADD;
+            cube.rotation.z -= ADD*roationSpeed;
+            cube.rotation.y -= ADD*roationSpeed;
+            cube.rotation.x -= ADD*roationSpeed;
+            if (cube.position.x <-3 || cube.position.x >3){
+                ADD *= -1;
+            };
+        };
+    
+        // check is sphere variable is null or exsit ?
+        if (sphere){
+            sphere.rotation.y += ADD*roationSpeed/2;
+        };
+
+        // check is torus variable is null or exsit ?
+        if (torus){
+            torus.rotation.y += ADD*roationSpeed/2;
+            //torus.rotation.x += ADD*roationSpeed/2;
+
         };
 
         let axes = new THREE.AxesHelper(10);
