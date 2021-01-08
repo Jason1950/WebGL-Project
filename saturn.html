@@ -9,36 +9,72 @@
 </html>
 <script>
     let scene, camera, renderer;
-    let saturn;
+    //let saturn;
+    let saturnArray = [];
+    let ADD = 0.01;
 
     let init = function(){
         scene = new THREE.Scene;
-        scene.background = new THREE.Color(0xffff00);
+        scene.background = new THREE.Color(0x000000);
 
         camera = new THREE.PerspectiveCamera(
-                            75,
+                            100,
                             window.innerWidth / window.innerHeight,
                             1,
                             1000 );
-        camera.position.y = 20;
-        camera.position.z = 10;
+        //camera.position.y = 5;
+        camera.position.z = 5;
+        //camera.position.x = 5;
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
 
+        createSphere();
+        createTorus(2);
+        createTorus(3);
+
+        saturnArray.forEach(item => item.rotation.x -=1.4);
+      
         document.body.appendChild(renderer.domElement);
     };
 
-    let createSphere =function(){
-        let geometry = new THREE.SphereGeometry(10,10,10);
-        let material = new THREE.MeshBasicMaterial({color:0x0569fa,wireframe:true});
+    let createTorus = function(r){
+        let geometry = new THREE.TorusGeometry(r,0.3,2,50);
+        let material = new THREE.MeshBasicMaterial({color:Math.random()*0xffffff,wireframe:false});
 
+        itemObject = new THREE.Mesh(geometry, material);
+        scene.add(itemObject); 
+
+        saturnArray.push(itemObject);
+        //itemObject.rotation.x -= 1;
+
+    };
+
+    let createSphere = function(){
+        let geometry = new THREE.SphereGeometry(1,10,10);
+        let material = new THREE.MeshBasicMaterial({color:0x0569fa,wireframe:true});
+        
+        itemObject = new THREE.Mesh(geometry, material);
+        scene.add(itemObject);
+
+        saturnArray.push(itemObject);
     };
 
     let mainLoop = function(){
         
+        
+        saturnArray.forEach(item => item.position.y -= ADD);
+        saturnArray.forEach(item => item.rotation.x -= ADD*0.1);
+        saturnArray.forEach(item => item.rotation.y -= ADD*0.1);
+        if (saturnArray[0].position.y > 2 || saturnArray[0].position.y < -2){
+          ADD *= -1;
+        };
+
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
     };
+
+    init();
+    mainLoop();
 
 </script>
