@@ -39,7 +39,7 @@
     };
 
     let createTorus = function(r){
-        let geometry = new THREE.TorusGeometry(r,0.3,2,50);
+        let geometry = new THREE.TorusGeometry(r,0.3,2,50,Math.PI/4*3);
         let material = new THREE.MeshBasicMaterial({color:Math.random()*0xffffff,wireframe:false});
 
         itemObject = new THREE.Mesh(geometry, material);
@@ -51,7 +51,7 @@
     };
 
     let createSphere = function(){
-        let geometry = new THREE.SphereGeometry(1,10,10);
+        let geometry = new THREE.SphereGeometry(1,30,30);
         let material = new THREE.MeshBasicMaterial({color:0x0569fa,wireframe:true});
         
         itemObject = new THREE.Mesh(geometry, material);
@@ -66,6 +66,7 @@
         saturnArray.forEach(item => item.position.y -= ADD);
         saturnArray.forEach(item => item.rotation.x -= ADD*0.1);
         saturnArray.forEach(item => item.rotation.y -= ADD*0.1);
+        saturnArray.forEach(item => item.rotation.z -= ADD*5);
         if (saturnArray[0].position.y > 2 || saturnArray[0].position.y < -2){
           ADD *= -1;
         };
