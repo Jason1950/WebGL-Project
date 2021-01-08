@@ -7,7 +7,10 @@
   </head>
   <body></body>
 </html>
-<script>
+<script type="module">
+
+    import { FBXLoader } from './jsm/loaders/FBXLoader.js';
+
     let scene, camera, renderer;
     let cube;
     let sphere;
@@ -82,6 +85,31 @@
         
 
         // create the renderer
+        // model
+        const loader = new FBXLoader();
+        loader.load( 'Baseball Pitching_EXPO.fbx', function ( object ) {
+        //loader.load( 'models/fbx/Samba Dancing.fbx', function ( object ) {
+                
+            mixer = new THREE.AnimationMixer( object );
+
+            const action = mixer.clipAction( object.animations[ 0 ] );
+            action.play();
+
+            object.traverse( function ( child ) {
+
+                if ( child.isMesh ) {
+
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+
+                }
+
+            } );
+
+            scene.add( object );
+            console.log('add sucessful!')
+
+        } );
         renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
 
