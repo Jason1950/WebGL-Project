@@ -1,0 +1,12 @@
+
+
+{
+  "port": 8000,
+  "files": ["./*.{html,htm,css,js}"],
+  "server": { "baseDir": "./" },
+  "startPath": "/PitcherFbx.html" ,
+  "ui": {
+    "port": 8001
+  }
+}
+
