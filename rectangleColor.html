@@ -7,7 +7,7 @@
 		
 		<style>
 			body {
-				background-color: #fff;
+				background-color: Math.random()*0xffffff;
 				color: #333;
 			}
 			a {
@@ -81,12 +81,14 @@
 			group2.add( sprite3 );
 
 			window.addEventListener( 'resize', onWindowResize, false );
-			window.addEventListener( "mousemove", onDocumentMouseMove, false );
+			window.addEventListener( "click", onDocumentMouseMove, false );
 
 		}
 
 		function animate() {
-
+            group.rotation.x -= 0.01;
+            group.rotation.y -= 0.01;
+            group.rotation.z -= 0.01;
 			renderer.render( scene, camera );
 			requestAnimationFrame( animate );
 
@@ -107,8 +109,8 @@
 
 			event.preventDefault();
 			if ( selectedObject ) {
-
-				selectedObject.material.color.set( '#69f' );
+				selectedObject.material.color.set((Math.random()*0xffffff));
+				//selectedObject.material.color.set( '#69f' );
 				selectedObject = null;
 
 			}
@@ -129,12 +131,30 @@
                     var colorSet = (Math.random()*0xffffff)
 					
                     selectedObject.material.color.set( colorSet );
-
+                    rotationSet(group);
 				}
 
 			}
 
 		}
+
+        function rotationSet(item){
+            //group.rotation.set(Math.random(),Math.random(),Math.random());
+            var rand = Math.random();
+            for(var i=0;i< 3;i++){
+                console.log('this is rotation i: ',i);
+                item.rotation.x -= rand;
+                //renderer.render( scene, camera );
+                //requestAnimationFrame( animate );
+                //sleep(300);
+            }
+        }
+        function sleep(milliseconds){ 
+            var start = new Date().getTime(); 
+            while(1)
+                if ((new Date().getTime() - start) > milliseconds)
+                    break;
+        }
 
 		const raycaster = new THREE.Raycaster();
 		const mouseVector = new THREE.Vector3();
