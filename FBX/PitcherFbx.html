@@ -69,7 +69,7 @@
         
         const loader = new FBXLoader();
         const fbxFileName = ['BaseballPitching_EXPO','SambaDancing','nurbs','OculusHand_L','cloth','SampleBallMan'];
-        loader.load( '/fbx/'+fbxFileName[1]+'.fbx', function ( object ) {
+        loader.load( '/fbx/'+fbxFileName[2]+'.fbx', function ( object ) {
             
             console.log('Loading FBX ! ');
             console.log(object);
@@ -77,8 +77,8 @@
             mixer = new THREE.AnimationMixer( object );
 
             console.log(object.animations[ 0 ]);
-            if (false){
-            //if (object.animations[0]){
+            //if (false){
+            if (object.animations[0]){
                 console.log('Load action sucessful ! ');
                 const action = mixer.clipAction( object.animations[ 0 ] );
                 
