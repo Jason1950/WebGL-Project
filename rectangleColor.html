@@ -26,7 +26,7 @@
 
         let renderer, scene, camera;
         let controls, group;
-        let rotaSpeed = 0.05;
+        let rotaSpeed = 0.01;
         init();
         animate();
 
@@ -40,7 +40,7 @@
 
             // init scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color( 0xffffff );
+            scene.background = new THREE.Color( 0x0 );
 
             group = new THREE.Group();
             scene.add( group );
@@ -116,6 +116,7 @@
         let selectedObject = null;
         function onDocumentKeyDown(event){
             if(event.keyCode === 68){
+                // key 68 -> d
                 console.log('before group array size : ', group.children.length);
                 var keepNumber = 6;
                 
@@ -215,7 +216,7 @@
             if (rand>0.65){
                 // this is create box !!
                 
-                let cube = new THREE.Mesh(new THREE.BoxGeometry(sizeRandom,sizeRandom,sizeRandom), new THREE.MeshBasicMaterial({color:0x69f,wireframe:true}));
+                let cube = new THREE.Mesh(new THREE.BoxGeometry(sizeRandom,sizeRandom,sizeRandom), new THREE.MeshBasicMaterial({color:Math.random()*0xffffff,wireframe:false}));
                 cube.position.set( random01, random02, random03 );
                 //cube.scale.set( 1, 1, 0.6);
                 group.add( cube );
@@ -226,8 +227,8 @@
                 let geometry = new THREE.SphereGeometry(sizeRandom, Math.floor(Math.random()*30), Math.floor(Math.random()*30)); 
                             // x,y,z : x-> radius, y-> horizntal segments, z-> vertical segments
                             // (x,y,z, phiStart, phiEnd, thetaStart, thetaEnd)
-                let material = new THREE.MeshBasicMaterial({color:0x69f,
-                                                                wireframe:true});
+                let material = new THREE.MeshBasicMaterial({color:Math.random()*0xffffff,
+                                                                wireframe:false});
                 let sphere = new THREE.Mesh(geometry, material);
                 sphere.position.set( random01, random02, random03 );
                 group.add(sphere);
@@ -238,7 +239,7 @@
                 // this is create sphere !!
                 let geometry = new THREE.TorusGeometry(sizeRandom,1,20,Math.floor(Math.random()*20),2*Math.PI); 
                             // (rTorus, thickTorus, rSegment, tubularSegment, cyclic)
-                let material = new THREE.MeshBasicMaterial({color:0x69f, wireframe:true});
+                let material = new THREE.MeshBasicMaterial({color:Math.random()*0xffffff, wireframe:false});
                 let torus = new THREE.Mesh(geometry, material);
                 torus.position.set( random01, random02, random03 );
                 torus.rotation.y -=  Math.random();
