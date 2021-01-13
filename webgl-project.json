@@ -5,8 +5,8 @@
   "files": ["./*.{html,htm,css,js}"],
   "server": { "baseDir": "./" },
   "//startPath": "/saturn.html" ,
-  "startPath": "/genIndex.html" ,
-  "//startPath": "/rectangleColor.html" ,
+  "//startPath": "/genIndex.html" ,
+  "startPath": "/rectangleColor.html" ,
   "ui": {
     "port": 8001
   }
