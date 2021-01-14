@@ -7,7 +7,19 @@ function setup() {
     createCanvas(640, 480);
     video = createCapture(VIDEO);
     video.size(width, height);
-    poseNet = ml5.poseNet(video, modelReady);
+    poseNet = ml5.poseNet(video, 
+      {
+        imageScaleFactor: 0.3,
+        outputStride: 16,
+        flipHorizontal: false,
+        minConfidence: 0.5,
+        maxPoseDetections: 5,
+        scoreThreshold: 0.5,
+        nmsRadius: 20,
+        detectionType: 'single',
+        multiplier: 0.75,
+       }
+      , modelReady);
     poseNet.on('pose', gotPoses);
     video.hide();
 }
