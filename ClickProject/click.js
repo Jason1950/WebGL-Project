@@ -6,6 +6,8 @@ import { OrbitControls } from './import/OrbitControls.js';
         model,                              // Our character
         neck,                               // Reference to the neck bone in the skeleton
         waist,                               // Reference to the waist bone in the skeleton
+        arm,
+        arm2,
         possibleAnims,                      // Animations found in our file
         mixer,                              // THREE.js animations mixer
         idle,
@@ -98,18 +100,30 @@ import { OrbitControls } from './import/OrbitControls.js';
                     // Reference the neck and waist bones
                     
                     let idleAnim = THREE.AnimationClip.findByName(fileAnimations, 'idle');
-                    
+                    //console.log(idleAnim);
                     if (o.isBone && o.name === 'mixamorigNeck') { 
                         neck = o;
-                        console.log(idleAnim)
-                        //console.log(neck);
+                        //console.log(idleAnim);
+                        //console.log(o);
+                    };
+
+                    if(o.isBone && o.name === 'mixamorigRightArm'){
+                        // console.log(idleAnim);
+                        arm = o;
+                    };
+                    if(o.isBone && o.name === 'mixamorigLeftArm'){
+                        // console.log(idleAnim);
+                        arm2 = o;
                     };
                     if (o.isBone && o.name === 'mixamorigSpine') {
                         waist = o;
-                        console.log(idleAnim)
+                        //console.log(idleAnim.tracks);
                     };
+                    
                     idleAnim.tracks.splice(3, 3);
-                    idleAnim.tracks.splice(9, 3);
+                    idleAnim.tracks.splice(15, 57);
+                    //idleAnim.tracks.splice(3, 3);
+                    //idleAnim.tracks.splice(9, 3);
                 });
                 let modelSize = 5;
                 model.scale.set(modelSize, modelSize, modelSize);
@@ -188,7 +202,75 @@ import { OrbitControls } from './import/OrbitControls.js';
         //window.addEventListener( "click", onMouseMove, false );
         //window.addEventListener( 'resize', onWindowResize, false );
         //window.addEventListener( "click", onDocumentMouseMove, false );
+        document.addEventListener('mousemove', function(e) {
+            var mousecoords = getMousePos(e);
+            if (neck && waist) {
+                moveJoint(mousecoords, neck, 80);
+                moveJoint(mousecoords, waist, 30);
+            };
+            if (arm && arm2 && waist){
+                moveJoint(mousecoords, waist, 50);
+                moveJoint(mousecoords, arm, 30);
+                moveJoint(mousecoords, arm2, 30);
+            };
+        });
+          
+          
     }
+
+    function getMousePos(e) {
+        return { x: e.clientX, y: e.clientY };
+    };
+
+    function moveJoint(mouse, joint, degreeLimit) {
+        let degrees = getMouseDegrees(mouse.x, mouse.y, degreeLimit);
+        joint.rotation.y = THREE.Math.degToRad(degrees.x);
+        joint.rotation.x = THREE.Math.degToRad(degrees.y);
+    };
+
+    function getMouseDegrees(x, y, degreeLimit) {
+        let dx = 0,
+            dy = 0,
+            xdiff,
+            xPercentage,
+            ydiff,
+            yPercentage;
+      
+        let w = { x: window.innerWidth, y: window.innerHeight };
+      
+        // Left (Rotates neck left between 0 and -degreeLimit)
+        
+         // 1. If cursor is in the left half of screen
+        if (x <= w.x / 2) {
+          // 2. Get the difference between middle of screen and cursor position
+          xdiff = w.x / 2 - x;  
+          // 3. Find the percentage of that difference (percentage toward edge of screen)
+          xPercentage = (xdiff / (w.x / 2)) * 100;
+          // 4. Convert that to a percentage of the maximum rotation we allow for the neck
+          dx = ((degreeLimit * xPercentage) / 100) * -1; }
+      // Right (Rotates neck right between 0 and degreeLimit)
+        if (x >= w.x / 2) {
+          xdiff = x - w.x / 2;
+          xPercentage = (xdiff / (w.x / 2)) * 100;
+          dx = (degreeLimit * xPercentage) / 100;
+        }
+        // Up (Rotates neck up between 0 and -degreeLimit)
+        if (y <= w.y / 2) {
+          ydiff = w.y / 2 - y;
+          yPercentage = (ydiff / (w.y / 2)) * 100;
+          // Note that I cut degreeLimit in half when she looks up
+          dy = (((degreeLimit * 0.5) * yPercentage) / 100) * -1;
+          }
+        
+        // Down (Rotates neck down between 0 and degreeLimit)
+        if (y >= w.y / 2) {
+          ydiff = y - w.y / 2;
+          yPercentage = (ydiff / (w.y / 2)) * 100;
+          dy = (degreeLimit * yPercentage) / 100;
+        }
+        return { x: dx, y: dy };
+    };
+
 
     let resizeRendererToDisplaySize = function (renderer) {
         const canvas = renderer.domElement;
