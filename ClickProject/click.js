@@ -8,6 +8,7 @@ import { OrbitControls } from './import/OrbitControls.js';
         waist,                               // Reference to the waist bone in the skeleton
         arm,
         arm2,
+        LeftUpLeg,
         possibleAnims,                      // Animations found in our file
         mixer,                              // THREE.js animations mixer
         idle,
@@ -16,6 +17,8 @@ import { OrbitControls } from './import/OrbitControls.js';
         currentlyAnimating = false,         // Used to check whether characters neck is being used in another anim
         raycaster = new THREE.Raycaster(),  // Used to detect the click on our character
         loaderAnim = document.getElementById('js-loader');
+
+    let actionName = [];
 
     const mouse = new THREE.Vector2();
     const target = new THREE.Vector2();
@@ -28,6 +31,7 @@ import { OrbitControls } from './import/OrbitControls.js';
         let geometry = new THREE.BoxGeometry(1,1,1);
         let material = new THREE.MeshBasicMaterial({color:0x0f00ff,wireframe:true});
         cube = new THREE.Mesh(geometry, material);
+        cube.position.y = 2 ;
         cube.rotation.x = -0.2;
         cube.rotation.y = -0.1;
         cube.rotation.z = -0.3;
@@ -98,48 +102,59 @@ import { OrbitControls } from './import/OrbitControls.js';
                     //};
 
                     // Reference the neck and waist bones
-                    
-                    let idleAnim = THREE.AnimationClip.findByName(fileAnimations, 'idle');
-                    //console.log(idleAnim);
                     if (o.isBone && o.name === 'mixamorigNeck') { 
                         neck = o;
-                        //console.log(idleAnim);
-                        //console.log(o);
-                    };
-
-                    if(o.isBone && o.name === 'mixamorigRightArm'){
-                        // console.log(idleAnim);
-                        arm = o;
                     };
                     if(o.isBone && o.name === 'mixamorigLeftArm'){
-                        // console.log(idleAnim);
+                        arm = o;
+                    };
+                    if(o.isBone && o.name === 'mixamorigLeftForeArm'){
                         arm2 = o;
                     };
                     if (o.isBone && o.name === 'mixamorigSpine') {
                         waist = o;
-                        //console.log(idleAnim.tracks);
                     };
-                    
-                    idleAnim.tracks.splice(3, 3);
-                    idleAnim.tracks.splice(15, 57);
-                    //idleAnim.tracks.splice(3, 3);
-                    //idleAnim.tracks.splice(9, 3);
+                    if (o.isBone && o.name === 'mixamorigLeftUpLeg'){
+                        LeftUpLeg = o;
+                    };
                 });
+
                 let modelSize = 5;
                 model.scale.set(modelSize, modelSize, modelSize);
                 model.position.y = -8.5;
-                //model.rotation.y = -0.51;
-                //model.rotation.x = 0.21;
-                //model.position.z = -10;
-
-                scene.add(model);
-
-                loaderAnim.remove();
 
                 mixer = new THREE.AnimationMixer(model);
+
+                let clips = fileAnimations.filter(val => val.name !== 'idle');
+                possibleAnims = clips.map(val => {
+                    let clip = THREE.AnimationClip.findByName(clips, val.name);
+
+                    clip.tracks.splice(3, 3);
+                    clip.tracks.splice(9, 3);
+
+                    clip = mixer.clipAction(clip);
+                    //console.log(clip._clip.name)
+                    actionName.push(clip._clip.name);
+                    return clip;
+                });
+
+
                 let idleAnim = THREE.AnimationClip.findByName(fileAnimations, 'idle');
+
+                // neck 12~14 + 21~26
+                idleAnim.tracks.splice(12, 3);
+                idleAnim.tracks.splice(18, 6);
+
+                //idleAnim.tracks.splice(21, 6);
+                //idleAnim.tracks.splice(3, 3);
+                //idleAnim.tracks.splice(9, 3);
+
                 idle = mixer.clipAction(idleAnim);
                 idle.play();
+
+                // add model and remove the reactangle animation
+                scene.add(model);
+                loaderAnim.remove();
             },
             undefined, // We don't need this function
             function(error) {
@@ -205,17 +220,20 @@ import { OrbitControls } from './import/OrbitControls.js';
         document.addEventListener('mousemove', function(e) {
             var mousecoords = getMousePos(e);
             if (neck && waist) {
-                moveJoint(mousecoords, neck, 80);
+                //moveJoint(mousecoords, neck, 80);
                 moveJoint(mousecoords, waist, 30);
             };
             if (arm && arm2 && waist){
-                moveJoint(mousecoords, waist, 50);
+                //moveJoint(mousecoords, waist, 50);
                 moveJoint(mousecoords, arm, 30);
                 moveJoint(mousecoords, arm2, 30);
+                //moveJoint(mousecoords, LeftUpLeg, 30)
             };
         });
-          
-          
+
+        window.addEventListener('click', e => raycast(e));
+        
+        console.log('this is action name array : ', actionName);
     }
 
     function getMousePos(e) {
@@ -227,6 +245,8 @@ import { OrbitControls } from './import/OrbitControls.js';
         joint.rotation.y = THREE.Math.degToRad(degrees.x);
         joint.rotation.x = THREE.Math.degToRad(degrees.y);
     };
+
+    
 
     function getMouseDegrees(x, y, degreeLimit) {
         let dx = 0,
@@ -272,6 +292,55 @@ import { OrbitControls } from './import/OrbitControls.js';
     };
 
 
+    function raycast(e) {
+        var mouse = {};
+        
+        mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
+        mouse.y = 1 - 2 * (e.clientY / window.innerHeight);
+        
+        // update the picking ray with the camera and mouse position
+        raycaster.setFromCamera(mouse, camera);
+      
+        // calculate objects intersecting the picking ray
+        var intersects = raycaster.intersectObjects(scene.children, true);
+      
+        if (intersects[0]) {
+          var object = intersects[0].object;
+      
+          if (object.name === 'stacy') {
+      
+            if (!currentlyAnimating) {
+              currentlyAnimating = true;
+              playOnClick();
+            }
+          }
+        }
+    };
+
+    function playOnClick() {
+        let anim = Math.floor(Math.random() * possibleAnims.length) + 0;
+        //playModifierAnimation(idle, 0.25, possibleAnims[anim], 0.25);
+        playModifierAnimation(idle, 0.25, possibleAnims[6], 0.25);
+    };
+
+    function playOnPoseNet() {
+        console.log("ok!! Got the pose check, let's play anims. !!");
+        playModifierAnimation(idle, 0.25, possibleAnims[6], 0.25);
+    };
+
+    function playModifierAnimation(from, fSpeed, to, tSpeed) {
+        to.setLoop(THREE.LoopOnce);
+        to.reset();
+        to.play();
+        from.crossFadeTo(to, fSpeed, true);
+        setTimeout(function() {
+          from.enabled = true;
+          to.crossFadeTo(from, tSpeed, true);
+          currentlyAnimating = false;
+        }, to._clip.duration * 1000 - ((tSpeed + fSpeed) * 1000));
+    };
+
+
     let resizeRendererToDisplaySize = function (renderer) {
         const canvas = renderer.domElement;
         let width = window.innerWidth;
@@ -287,24 +356,7 @@ import { OrbitControls } from './import/OrbitControls.js';
         return needResize;
     };
 
-    let mainLoop = function(){
-
-        if (resizeRendererToDisplaySize(renderer)) {
-            const canvas = renderer.domElement;
-            camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            camera.updateProjectionMatrix();
-        }
-
-        if (mixer) {
-            mixer.update(clock.getDelta());
-        };
-
-        cube.rotation.x -= 0.05;
-        cube.rotation.y -= 0.01;
-        cube.rotation.z -= 0.03;
-        renderer.render(scene, camera);
-        requestAnimationFrame(mainLoop);
-    };
+    
 
 
 
@@ -318,7 +370,31 @@ import { OrbitControls } from './import/OrbitControls.js';
 
     }
 
+
+    
+
+
  
+    let mainLoop = function(){
+
+        if (resizeRendererToDisplaySize(renderer)) {
+            const canvas = renderer.domElement;
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+        }
+
+        if (mixer) {
+            mixer.update(clock.getDelta());
+        };
+
+        //model.rotation.y -= 0.01;
+
+        cube.rotation.x -= 0.05;
+        cube.rotation.y -= 0.01;
+        cube.rotation.z -= 0.03;
+        renderer.render(scene, camera);
+        requestAnimationFrame(mainLoop);
+    };
 
     init(); 
     mainLoop();
