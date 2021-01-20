@@ -1,3 +1,5 @@
+// import * as www from './p5.min.js';
+
 let video;
 let poseNet;
 let poses = [];
@@ -10,7 +12,7 @@ let actionState = false;
 let waveHandTime = Date.now();
 let waveTimes = 0;
 let waveCountState = false;
-let playAnimation = false;
+var playAnimation = false;
 
 function setup() {
     createCanvas(640, 480);
@@ -26,7 +28,6 @@ function setup() {
         scoreThreshold: 0.5,
         nmsRadius: 20,
         detectionType: 'single',
-        
        }
       , modelReady);
     poseNet.on('pose', gotPoses);
@@ -46,10 +47,11 @@ function draw() {
 
 function drawKeypoints()  {
     for (let i = 0; i < poses.length; i++) {
+        //poses.length is number of detect people
         
-        
-        //console.log(poses.length); // length is number of detect people
-        if( i< detectionPersonNumber){
+
+        // if( i< detectionPersonNumber){
+        if(false){
             for (let j = 0; j < poses[i].pose.keypoints.length; j++) {
                 let keypoint = poses[i].pose.keypoints[j];
                 // drow keypoint when score > 0.2
@@ -57,73 +59,6 @@ function drawKeypoints()  {
                     fill(255, 0, 0);
                     noStroke();
                     ellipse(keypoint.position.x, keypoint.position.y, 5, 5);
-                }
-            }
-        }
-
-            // number 7 leftElbow
-            let leftElbowKeypoint = poses[i].pose.keypoints[7];
-            if (leftElbowKeypoint.score > 0.5) {
-                leftElbowPos[0]=Math.floor(leftElbowKeypoint.position.x);
-                leftElbowPos[1]=Math.floor(leftElbowKeypoint.position.y);
-            }
-            // number 9 leftElbow
-            let leftWristKeypoint = poses[i].pose.keypoints[9];
-            if (leftWristKeypoint.score > 0.5) {
-                leftWristPos[0]=Math.floor(leftWristKeypoint.position.x);
-                leftWristPos[1]=Math.floor(leftWristKeypoint.position.y);
-            }
-            console.log('left elbow position : ',leftElbowPos);
-            //console.log('left wrist position : ',leftWristPos);
-            if(Math.abs(leftWristPos[0]-leftElbowPos[0])<30){
-                if (!actionState && waveCountState){
-                    waveTimes += 1;
-                    waveCountState = false;
-                }
-                actionState = true;
-                
-            }else{
-                if (actionState && waveCountState){
-                    waveTimes += 1;
-                    waveCountState = false;
-                }
-                actionState = false;
-                timeStampTemp = Date.now();
-            }
-            // console.log(waveTimes);
-            if ((Date.now() - timeStampTemp)>0.3){
-                waveCountState = true;
-            }
-
-            if ((Date.now() - timeStampTemp)>1){
-                // console.log('the elbow and wrist is vertical state ! , distance : ',Math.abs(leftWristPos[0]-leftElbowPos[0]));
-                timeStampTemp = Date.now();
-            }
-
-            if (waveTimes>7){
-                playAnimation = true;
-                console.log('Stacy say hello to you!!');
-                waveTimes = 0;
-            }else{
-                playAnimation = false;
-            }
-        
-    }
-}
-
-
-
-function Backup_drawKeypoints()  {
-    for (let i = 0; i < poses.length; i++) {
-        //console.log(poses.length); // length is number of detect people
-        if( i< detectionPersonNumber){
-            for (let j = 0; j < poses[i].pose.keypoints.length; j++) {
-                let keypoint = poses[i].pose.keypoints[j];
-                // drow keypoint when score > 0.2
-                if (keypoint.score > 0.2) {
-                    fill(255, 0, 0);
-                    noStroke();
-                    ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
                 }
             }
         }
@@ -140,7 +75,7 @@ function Backup_drawKeypoints()  {
             leftWristPos[0]=Math.floor(leftWristKeypoint.position.x);
             leftWristPos[1]=Math.floor(leftWristKeypoint.position.y);
         }
-        //console.log('left elbow position : ',leftElbowPos);
+        // console.log('left elbow position : ',leftElbowPos);
         //console.log('left wrist position : ',leftWristPos);
         if(Math.abs(leftWristPos[0]-leftElbowPos[0])<30){
             if (!actionState && waveCountState){
@@ -167,14 +102,13 @@ function Backup_drawKeypoints()  {
             timeStampTemp = Date.now();
         }
 
-        if (waveTimes>7){
+        if (waveTimes>5){
+            playAnimation = true;
             console.log('Stacy say hello to you!!');
             waveTimes = 0;
+        }else{
+            playAnimation = false;
         }
-
-        // time function
-        // var timeInMs = Date.now();
-        //console.log(Date.now()); 
     }
 }
 
@@ -195,3 +129,21 @@ function drawSkeleton() {
 function gotPoses(results) {
     poses = results;
 }
+
+
+// export let playAnimationFunc = function () {
+//     return playAnimation
+//   }
+// export{
+//     playAnimation
+// };
+
+// module.exports = MyClass(){
+//     // playAnimationFunc(){
+//     //         return playAnimation;
+//     // }
+//     // return playAnimation;
+//     constructor() {
+//         console.log("es6");
+//       }
+// };
