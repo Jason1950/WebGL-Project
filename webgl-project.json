@@ -7,8 +7,9 @@
   "//startPath": "/saturn.html" ,
   "//startPath": "/PosenetIndex.html" ,
   "//startPath": "/ml5js.html" ,
-  "startPath": "/ClickProject/Personclick.html" ,
+  "//startPath": "/ClickProject/Personclick.html" ,
   "//startPath": "/rectangleColor.html" ,
+  "startPath": "/test.html" ,
   "ui": {
     "port": 8001
   }

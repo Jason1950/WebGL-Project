@@ -1,0 +1,24 @@
+<html>
+  <body>
+    
+    <img id='cat' src='./cat.jpg '/>
+  
+    <!-- Load TensorFlow.js -->
+    <script src="https://unpkg.com/@tensorflow/tfjs"></script>
+    <!-- Load Posenet -->
+    <script src="https://unpkg.com/@tensorflow-models/posenet">
+    </script>
+    <script type="text/javascript">
+        posenet.load().then(function(net) {
+            // posenet model loaded
+            const imageElement = document.getElementById('cat');
+            const pose = net.estimateSinglePose(imageElement, {
+            flipHorizontal: true
+        });
+        return pose;
+        }).then(function(pose){
+        console.log(pose);
+        });
+        </script>
+  </body>
+</html>
