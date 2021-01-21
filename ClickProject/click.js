@@ -241,6 +241,7 @@ import { OrbitControls } from './import/OrbitControls.js';
         //window.addEventListener( 'resize', onWindowResize, false );
         //window.addEventListener( "click", onDocumentMouseMove, false );
         window.addEventListener( "keydown", onDocumentKeyDown, false );
+        window.addEventListener('touchend', e => raycast(e, true));
         document.addEventListener('mousemove', function(e) {
             
             var mousecoords = getMousePos(e);
@@ -318,11 +319,18 @@ import { OrbitControls } from './import/OrbitControls.js';
     };
 
 
-    function raycast(e) {
+    function raycast(e,touch=false) {
         var mouse = {};
         
-        mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
-        mouse.y = 1 - 2 * (e.clientY / window.innerHeight);
+        // mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
+        // mouse.y = 1 - 2 * (e.clientY / window.innerHeight);
+        if (touch) {
+            mouse.x = 2 * (e.changedTouches[0].clientX / window.innerWidth) - 1;
+            mouse.y = 1 - 2 * (e.changedTouches[0].clientY / window.innerHeight);
+        } else {
+            mouse.x = 2 * (e.clientX / window.innerWidth) - 1;
+            mouse.y = 1 - 2 * (e.clientY / window.innerHeight);
+        }
         
         // update the picking ray with the camera and mouse position
         raycaster.setFromCamera(mouse, camera);
