@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Load TensorFlow.js -->
+    <script src="https://unpkg.com/@tensorflow/tfjs"></script>
+    <!-- Load Posenet -->
+    <script src="https://unpkg.com/@tensorflow-models/posenet"></script>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>
+        let poseNetState = false;
+        var video = document.getElementById("video");
+
+        // Get access to the camera!
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Not adding { audio: true } since we only want video now
+            navigator.mediaDevices
+            .getUserMedia({ video: true })
+            .then(function (stream) {
+                //video.src = window.URL.createObjectURL(stream);
+                video.srcObject = stream;
+                video.play();
+                poseNetState = true;
+            });
+        }
+
+      /* Legacy code below: getUserMedia 
+else if(navigator.getUserMedia) { // Standard
+    navigator.getUserMedia({ video: true }, function(stream) {
+        video.src = stream;
+        video.play();
+    }, errBack);
+} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+    navigator.webkitGetUserMedia({ video: true }, function(stream){
+        video.src = window.webkitURL.createObjectURL(stream);
+        video.play();
+    }, errBack);
+} else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
+    navigator.mozGetUserMedia({ video: true }, function(stream){
+        video.srcObject = stream;
+        video.play();
+    }, errBack);
+}
+*/
+
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      var video = document.getElementById("video");
+
+      // Trigger photo take
+      document.getElementById("snap").addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 640, 480);
+      });
+
+
+        
+
+    if (poseNetState){
+            //  -----------------------------------------------------
+            //              posenet start !!!!!!!!!!!!!
+            //  -----------------------------------------------------
+            let poses;
+            posenet.load().then(function(net) {
+                // posenet model loaded
+                //const imageElement = document.getElementById('cat');
+                const pose = net.estimateSinglePose(video, {
+                flipHorizontal: true
+            });
+            return pose;
+            }).then(function(pose){
+            poses = pose;
+            console.log(pose);
+            console.log(poses.keypoints);
+
+            for (let j = 0; j < poses.keypoints.length; j++) {
+                let keypoint = poses.keypoints[j];
+                // drow keypoint when score > 0.2
+                if (keypoint.score > 0.2) {
+                    fill(255, 0, 0);
+                    noStroke();
+                    ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+                }
+            }
+            let leftElbowPos = [0,0];
+            let leftWristPos = [0,0]; // number 9 leftWrist
+            // number 7 leftElbow
+            let leftElbowKeypoint = poses.keypoints[7];
+            if (leftElbowKeypoint.score > 0.2) {
+                leftElbowPos[0]=Math.floor(leftElbowKeypoint.position.x);
+                leftElbowPos[1]=Math.floor(leftElbowKeypoint.position.y);
+            }
+            // number 9 leftElbow
+            let leftWristKeypoint = poses.keypoints[9];
+            if (leftWristKeypoint.score > 0.5) {
+                leftWristPos[0]=Math.floor(leftWristKeypoint.position.x);
+                leftWristPos[1]=Math.floor(leftWristKeypoint.position.y);
+            }
+            console.log(leftElbowPos);
+            console.log(leftWristPos);
+            });
+
+    }
+
+
+    </script>
+  </body>
+</html>
