@@ -1,21 +1,5 @@
-function a (){let new_element=document.createElement("script"); 
-new_element.setAttribute("type","text/javascript"); 
-new_element.setAttribute("src","personsketch.js");// 在這裡引入了a.js 
-document.body.appendChild(new_element); 
-}
-// a();
-// console.log(a);
 
-
- 
-// -------------------------------------------------------------------
-//
-//                         down is model 
-//
-// -------------------------------------------------------------------
-
-
-import { OrbitControls } from './OrbitControls.js';
+import { OrbitControls } from './import/OrbitControls.js';
     // Set our main variables
     let scene,  
         renderer,
@@ -58,7 +42,7 @@ import { OrbitControls } from './OrbitControls.js';
         var texture = new THREE.TextureLoader().load( './man.jpg' );
         var texture2 = new THREE.TextureLoader().load( './itri.jpg' );
         var geometry = new THREE.BoxBufferGeometry( 2, 2, 2 );
-        var material = new THREE.MeshBasicMaterial( { map: texture2 } );
+        var material = new THREE.MeshBasicMaterial( { map: texture } );
         // geometry.faces[i].materialIndex
         cube = new THREE.Mesh( geometry, material );
         cube.position.y = 4 ;
@@ -171,10 +155,6 @@ import { OrbitControls } from './OrbitControls.js';
                 // neck 12~14 + 21~26
                 idleAnim.tracks.splice(12, 3);
                 idleAnim.tracks.splice(18, 6);
-
-                //idleAnim.tracks.splice(21, 6);
-                //idleAnim.tracks.splice(3, 3);
-                //idleAnim.tracks.splice(9, 3);
 
                 idle = mixer.clipAction(idleAnim);
                 idle.play();
@@ -440,20 +420,6 @@ import { OrbitControls } from './OrbitControls.js';
             mouseSate = false;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     function onWindowResize() {
 
