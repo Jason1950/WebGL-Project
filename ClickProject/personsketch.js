@@ -1,6 +1,6 @@
 // import * as www from './p5.min.js';
 
-let video;
+let video = document.getElementById("cameraView");
 let poseNet;
 let poses = [];
 let skeletons = [];
@@ -39,7 +39,7 @@ function modelReady() {
 }
 
 function draw() {
-    image(video, 0, 0, width, height);
+    // image(video, 0, 0, width, height);
     drawKeypoints();
 
     
@@ -54,27 +54,27 @@ function drawKeypoints()  {
         
 
         // if( i< detectionPersonNumber){
-        if(false){
-            for (let j = 0; j < poses[i].pose.keypoints.length; j++) {
-                let keypoint = poses[i].pose.keypoints[j];
-                // drow keypoint when score > 0.2
-                if (keypoint.score > 0.2) {
-                    fill(255, 0, 0);
-                    noStroke();
-                    ellipse(keypoint.position.x, keypoint.position.y, 5, 5);
-                }
-            }
-        }
+        // if(false){
+        //     for (let j = 0; j < poses[i].pose.keypoints.length; j++) {
+        //         let keypoint = poses[i].pose.keypoints[j];
+        //         // drow keypoint when score > 0.2
+        //         if (keypoint.score > 0.2) {
+        //             fill(255, 0, 0);
+        //             noStroke();
+        //             ellipse(keypoint.position.x, keypoint.position.y, 5, 5);
+        //         }
+        //     }
+        // }
 
         // number 7 leftElbow
         let leftElbowKeypoint = poses[i].pose.keypoints[7];
-        if (leftElbowKeypoint.score > 0.5) {
+        if (leftElbowKeypoint.score > 0.3) {
             leftElbowPos[0]=Math.floor(leftElbowKeypoint.position.x);
             leftElbowPos[1]=Math.floor(leftElbowKeypoint.position.y);
         }
         // number 9 leftElbow
         let leftWristKeypoint = poses[i].pose.keypoints[9];
-        if (leftWristKeypoint.score > 0.5) {
+        if (leftWristKeypoint.score > 0.3) {
             leftWristPos[0]=Math.floor(leftWristKeypoint.position.x);
             leftWristPos[1]=Math.floor(leftWristKeypoint.position.y);
         }
