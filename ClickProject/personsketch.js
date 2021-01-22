@@ -41,7 +41,10 @@ function modelReady() {
 function draw() {
     image(video, 0, 0, width, height);
     drawKeypoints();
-    // drawSkeleton();
+
+    
+    //console.log('draw : wave hand state : ', playAnimation);
+    drawSkeleton();
 }
 
 
@@ -105,9 +108,11 @@ function drawKeypoints()  {
         if (waveTimes>5){
             playAnimation = true;
             console.log('Stacy say hello to you!!');
+            document.getElementById("htmlid").name = true;
             waveTimes = 0;
         }else{
             playAnimation = false;
+            // document.getElementById("htmlid").name = false;
         }
     }
 }

@@ -261,6 +261,8 @@ import { OrbitControls } from './OrbitControls.js';
         window.addEventListener('click', e => raycast(e));
         
         console.log('this is action name array : ', actionName);
+
+        
     }
 
     function getMousePos(e) {
@@ -477,6 +479,17 @@ import { OrbitControls } from './OrbitControls.js';
             mixer.update(clock.getDelta());
         };
 
+        let idValue = document.getElementById('htmlid').name;
+        console.log(idValue);
+        let isTrueSet = (idValue == 'true');
+        if (isTrueSet){
+            
+            //console.log('this is isTrueSet : ', isTrueSet, typeof(isTrueSet));
+            playOnPoseNet();
+            document.getElementById("htmlid").name = false;
+        }else{
+            //console.log('this is isTrueSet : ', isTrueSet, typeof(isTrueSet));
+        }
         // play the animations
         // console.log(playAnimation);
         // if(playAnimation){
