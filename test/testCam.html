@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-  </head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <style>
+            /* h1 這裡已定義為red色，###實驗下一列### */
+            #video2 {
+                width: 320px;
+                height: 240px;
+                background-color: blue;
+                position: absolute;
+                right: 0;
+                z-index: 1;
+            }
+            #video{
+                background-color: blue;
+            }
+        </style>
+    </head>
   <body>
     <div id="liveView" class="webcam">
         <button id="webcamButton">Enable Webcam</button>
@@ -15,10 +29,14 @@
     <script src="https://unpkg.com/@tensorflow/tfjs"></script>
     <!-- Load Posenet -->
     <script src="https://unpkg.com/@tensorflow-models/posenet"></script>
+
     <video id="video" width="640" height="480" autoplay></video>
+    <video id="video2" width="640" height="480" autoplay></video>
+
+    <!-- this is snap for take picture !!
     <button id="snap">Snap Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
-
-    <script src='./test.js'></script>
+    -->
+    <script src='./testcam.js' type='module'></script>
   </body>
 </html>
