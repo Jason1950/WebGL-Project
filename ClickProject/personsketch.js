@@ -1,6 +1,7 @@
 // import * as www from './p5.min.js';
 
-let video = document.getElementById("cameraView");
+// let video = document.querySelector('#video2');
+let video;// = document.getElementById("cameraView");
 let poseNet;
 let poses = [];
 let skeletons = [];
@@ -31,7 +32,7 @@ function setup() {
        }
       , modelReady);
     poseNet.on('pose', gotPoses);
-    video.hide();
+    // video.hide();
 }
 
 function modelReady() {
