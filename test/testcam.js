@@ -1,5 +1,6 @@
     
     let poseNetState = false;
+    let poseNet = [];
     var video = document.getElementById("video2");
     setupCamera111();
     function setupCamera() {
@@ -70,15 +71,32 @@
                                 scaleFactor, 
                                 flipHorizontal, 
                                 outputStride);
-        
+        // console.log(pose);
         console.log(Math.floor(pose.keypoints[7].position.x));
-        
         requestAnimationFrame(loadAndPredict);
+        return pose;
+        poseNet = poseNet.concat(pose);
+        // poseNet = pose;
+        // console.log(Math.floor(pose.keypoints[7].position.x));
+        
+        // requestAnimationFrame(loadAndPredict);
+        Predict();
+        
+    }
+
+    function Predict(pose){
+        // const pose = net.estimateSinglePose(video, 0.5, false, 16);
+        console.log(pose);
+        // console.log(Math.floor(pose.keypoints[7].position.x));
+
+        // requestAnimationFrame(Predict);
     }
 
     video.addEventListener('loadeddata', function(){
         // Do something once loaded.
-        loadAndPredict();
+        let pose = loadAndPredict();
+
+        Predict(pose);
       });
     
 
