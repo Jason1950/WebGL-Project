@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>ITRI WebGL Home Page</title>
+        <style>
+            /* h1 這裡已定義為red色，###實驗下一列### */
+            *{
+                font-family: 'Microsoft JhengHei';
+                /* border: 1px solid;*/
+            }
+            body{
+                margin: 0;
+                padding: 0;
+            }
+            .top{
+                width: 80%;
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                .logo{
+                    height: 50px;
+                }
+                .web_title{
+                    color: #00ABEB;
+                    font-size: 30px;
+                    margin: 60px 100px;
+                }
+            }
+            .content{
+                display: flex;
+                align-items: center;
+                width: 80%;
+                margin: 20px auto;
+                .textbox{
+                    display: flex;
+                    justify-content: center;
+                    margin-right: 50px;
+                    font-size: 18px;
+                }
+                .pic{
+                    width: 200px;
+                    height: 200px;
+                    background-color: #EEE;
+                    margin: 10PX;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top"><img class="logo" src="https://college.itri.org.tw/powerschool/logo/1.png"  height="60"/>
+            <h3 class="web_title" style="margin-left:20px">ITRI WEB PAGE</h3>
+        </div>
+        <div class="content" id="c1">
+            <a href="./ClickProject/Personclick.html" class="textbox">Demo - Stacy interactive</a><img class="pic"/>
+        </div>
+        <div class="content" id="c2">
+            <a href="./test/testCam.html" class="textbox">Test - Test Camera and Posenet</a><img class="pic"/>
+        </div>
+        <div class="content" id="c3">
+            <a href="./FBX/PitcherFbx.html" class="textbox">Demo - Pitcher Fbx Load</a><img class="pic"/>
+        </div>
+        <div class="content" id="c4">
+            <a href="./Practice/Udmey/saturn.html" class="textbox">Practice - Saturn rotation</a><img class="pic"/>
+        </div>
+        <div class="content" id="c5">
+            <a href="./Practice/Udmey/rectangleColor.html" class="textbox">Practice - Random Retangle Color Change</a><img class="pic"/>
+        </div>
+        <div class="content" id="c6">
+            <a href="./Practice/PoseNet/mla4-Posenet.html" class="textbox">Demo - Posenet</a><img class="pic"/>
+        </div>
+        <div class="content" id="c7">
+            <a href="./MusicFace/musicFace.html" class="textbox">Demo - Music Face</a><img class="pic"/>
+        </div>
+    </body>
+</html>
