@@ -7,6 +7,10 @@
         <title>Document</title>
         <style>
             /* h1 這裡已定義為red色，###實驗下一列### */
+            body {
+                padding: 0; 
+                margin: 0;
+            }
             #video2 {
                 width: 150px;
                 height: 100px;
@@ -18,24 +22,35 @@
             #video{
                 background-color: blue;
             }
+            #canvas001{
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                position: absolute;
+                right: 0;
+                z-index: 1;
+            }
         </style>
     </head>
   <body>
-
+    <!-- this is snap for take picture !!
     <div>
         <button id="effectButton">Enable Effects</button>
     </div>
 
     <video id="video" width="150" height="100" autoplay></video>
 
-    <!-- this is snap for take picture !!
+    
     <button id="snap">Snap Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
     -->
+    <div>
+        <canvas id="canvas001"></canvas>
+    </div>
     
   </body>
 </html>
 
-<script src='./three.min.js'></script>
-<script src='./GLTFLoader.js'></script>
-<script src='./testcolor.js'></script>
+<script src='./import/three.min.js'></script>
+
+<script src='./testcolor.js' type='module'></script>

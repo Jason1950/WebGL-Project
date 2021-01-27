@@ -1,23 +1,41 @@
-    
+
     let poseNetState = false;
     let poseNet = [];
     var video = document.getElementById("video2");
+    // cameraPermission();
     setupCamera111();
-    function setupCamera() {
-        // Get access to the camera!
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Not adding { audio: true } since we only want video now
-            // navigator.mediaDevices.getUserMedia(constrains).then(success).catch(error);
-            navigator.mediaDevices
-            .getUserMedia({ video: true })
-            .then(function (stream) {
-                //video.src = window.URL.createObjectURL(stream);
-                video.srcObject = stream;
-                video.play();
-                poseNetState = true;
-            });
-        }
-    }
+    // function setupCamera() {
+    //     // Get access to the camera!
+    //     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    //         // Not adding { audio: true } since we only want video now
+    //         // navigator.mediaDevices.getUserMedia(constrains).then(success).catch(error);
+    //         navigator.mediaDevices
+    //         .getUserMedia({ video: true })
+    //         .then(function (stream) {
+    //             //video.src = window.URL.createObjectURL(stream);
+    //             video.srcObject = stream;
+    //             video.play();
+    //             poseNetState = true;
+    //         });
+    //     }
+    // }
+
+    // function cameraPermission(){
+    //     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    //         throw new Error(
+    //             'Browser API navigator.mediaDevices.getUserMedia not available');
+    //       }
+    //     // navigator.mediaDevices.getUserMedia({ video: true })
+    //     if (navigator.mediaDevices.getUserMedia) {
+    //         navigator.mediaDevices.getUserMedia({ video: true })
+    //           .then(function (stream) {
+    //             video.srcObject = stream;
+    //           })
+    //           .catch(function (err0r) {
+    //             console.log("Something went wrong!");
+    //           });
+    //       }
+    // }
 
     async function setupCamera111() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -73,6 +91,7 @@
                                 outputStride);
         // console.log(pose);
         console.log(Math.floor(pose.keypoints[7].position.x));
+        document.getElementById("textH1").innerHTML = Math.floor(pose.keypoints[7].position.x);
         requestAnimationFrame(loadAndPredict);
         return pose;
         poseNet = poseNet.concat(pose);
