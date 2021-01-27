@@ -1,3 +1,17 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
@@ -8,7 +22,7 @@
     <meta name="description" content="Demo of the tutorial on how to create a Three.js powered audio visualizer that takes input from the webcam." />
     <meta name="keywords" content="three.js, audio visualizer, webcam, web development, javascript, webgl" />
     <meta name="author" content="Codrops" />
-    
+    <link rel="shortcut icon" href="../favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/base.css" />
     <script>
@@ -19,7 +33,16 @@
     };
     supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");
     </script>
-    <script src="//tympanus.net/codrops/adpacks/analytics.js"></script>
+    <style>
+        #video {
+                width: 100%;
+                height: 100%;
+                background-color: blue;
+                position: absolute;
+                right: 0;
+                z-index: 1;
+            }
+    </style>
 </head>
 
 <body class="demo-1 cda-noimg cda-naked cda-alignright">
@@ -28,7 +51,6 @@
             <div class="frame__title-wrap">
                 <img src="itri.jpg" alt="logo pic loading" title="itri logo" width="20px" height="20px">
                 <h1 class="frame__title">ITRI Visualizer Test</h1>
-                
             </div>
         </div>
         <div id="content" class="content">
@@ -36,8 +58,7 @@
             <div id="message" class="hidden">Please allow camera access.</div>
         </div>
     </main>
-    <script src="musicface.js" type='module'></script>
-    <script src="./demoad.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
