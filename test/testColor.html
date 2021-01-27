@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <style>
+            /* h1 這裡已定義為red色，###實驗下一列### */
+            #video2 {
+                width: 150px;
+                height: 100px;
+                background-color: blue;
+                position: absolute;
+                right: 0;
+                z-index: 1;
+            }
+            #video{
+                background-color: blue;
+            }
+        </style>
+    </head>
+  <body>
+
+    <div>
+        <button id="effectButton">Enable Effects</button>
+    </div>
+
+    <video id="video" width="150" height="100" autoplay></video>
+
+    <!-- this is snap for take picture !!
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    -->
+    
+  </body>
+</html>
+
+<script src='./three.min.js'></script>
+<script src='./GLTFLoader.js'></script>
+<script src='./testcolor.js'></script>
