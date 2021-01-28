@@ -164,7 +164,7 @@
     function onMouseWheelScrollFunc(event){
         // console.log(event.deltaX,event.deltaY,event);
         if(event.deltaY < 0) {
-            console.log('鼠标向上滚动了');
+            console.log('滾輪向上滾動!!');
             if( A<1 ){
                 //limitA *= -1;
                 A += limitA;
@@ -173,7 +173,7 @@
                 A -= 0.02;
             }
         }else{
-            console.log('鼠标向下滚动了');
+            console.log('滾輪向下滾動!!');
             if( A> 0 ){
                 // limitA *= -1;
                 A -= limitA;
